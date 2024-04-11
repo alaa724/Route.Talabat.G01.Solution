@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using Talabat.Infrastructure.Data;
+
 namespace Route.Talabat.APIs
 {
 	public class Program
@@ -13,7 +16,13 @@ namespace Route.Talabat.APIs
 			WebApplicationBuilder.Services.AddControllers();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			WebApplicationBuilder.Services.AddEndpointsApiExplorer();
-			WebApplicationBuilder.Services.AddSwaggerGen(); 
+			WebApplicationBuilder.Services.AddSwaggerGen();
+
+			WebApplicationBuilder.Services.AddDbContext<StoreDbContext>(options =>
+			{
+				options.UseSqlServer(WebApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
+			});
+
 			#endregion
 
 			var app = WebApplicationBuilder.Build();
@@ -33,6 +42,7 @@ namespace Route.Talabat.APIs
 
 			app.MapControllers();
 
+			
 			#endregion
 
 			app.Run();
