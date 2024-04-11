@@ -14,10 +14,10 @@ namespace Talabat.Core.Entities
         public decimal Price { get; set; }
 
         public int BrandId { get; set; } // FK => ProductBrand
-        public ProductBrand Brand { get; set; } // Navigational Propert [One]
+        public virtual ProductBrand Brand { get; set; } // Navigational Propert [One]
 
         public int CategoryId { get; set; } // FK => ProductCategory
-        public ProductCategory Category { get; set; } // Navigational Propert [One]
+        public virtual ProductCategory Category { get; set; } // Navigational Propert [One]
 
 	}
 }

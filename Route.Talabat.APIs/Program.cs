@@ -22,7 +22,7 @@ namespace Route.Talabat.APIs
 
 			WebApplicationBuilder.Services.AddDbContext<StoreDbContext>(options =>
 			{
-				options.UseSqlServer(WebApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
+				options.UseLazyLoadingProxies().UseSqlServer(WebApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
 			});
 
 			WebApplicationBuilder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
