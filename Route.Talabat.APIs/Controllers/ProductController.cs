@@ -15,13 +15,24 @@ namespace Route.Talabat.APIs.Controllers
 			_productsRepo = productsRepo;
 		}
 
-		// api/Products
+		// api/Product
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
 		{
 			var products = await _productsRepo.GetAllAsync();
 
 			return Ok(products);
+		}
+
+		// api/Product/1
+		[HttpGet("{id}")]
+		public async Task<ActionResult<Product>> GetProduct(int id)
+		{
+			var product = await _productsRepo.GetAsync(id);
+
+			if (product is null)
+				return NotFound();
+			return Ok(product);
 		}
 	}
 }
