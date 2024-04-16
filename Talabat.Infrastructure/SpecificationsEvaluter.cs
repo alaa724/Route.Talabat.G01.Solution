@@ -24,6 +24,7 @@ namespace Talabat.Infrastructure
 			// 2. P => P.Category
 
 			query = spec.Includes.Aggregate(query, (currentquery, includeExpression) => currentquery.Include(includeExpression));
+			//currentquery -> query = _dbContext.Set<Product>().Where(P => P.Id == id)
 			//1-> query = _dbContext.Set<Product>().Where(P => P.Id == id).Include(P => P.Brand)
 			//2-> query = _dbContext.Set<Product>().Where(P => P.Id == id).Include(P => P.Brand).Include(P => P.Category)
 
