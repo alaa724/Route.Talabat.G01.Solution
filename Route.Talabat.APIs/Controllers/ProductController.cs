@@ -35,6 +35,9 @@ namespace Route.Talabat.APIs.Controllers
 			return Ok(mapedProducts);
 		}
 
+
+		[ProducesResponseType(typeof(ProductToReturnDto) , StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(ApiResponse) , StatusCodes.Status404NotFound)]
 		// api/Product/1
 		[HttpGet("{id}")]
 		public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
