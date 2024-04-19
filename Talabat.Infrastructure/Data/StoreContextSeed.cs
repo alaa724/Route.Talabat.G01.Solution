@@ -50,6 +50,7 @@ namespace Talabat.Infrastructure.Data
 				{
 					foreach (var product in products)
 					{
+
 						_dbContext.Set<Product>().Add(product);
 					}
 					await _dbContext.SaveChangesAsync();
