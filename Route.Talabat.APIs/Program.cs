@@ -5,6 +5,7 @@ using Route.Talabat.APIs.Errors;
 using Route.Talabat.APIs.Extensions;
 using Route.Talabat.APIs.Helpers;
 using Route.Talabat.APIs.Middlewares;
+using StackExchange.Redis;
 using Talabat.Core.Repository.Contract;
 using Talabat.Infrastructure;
 using Talabat.Infrastructure.Data;
@@ -27,6 +28,12 @@ namespace Route.Talabat.APIs
 			WebApplicationBuilder.Services.AddDbContext<StoreDbContext>(options =>
 			{
 				options/*.UseLazyLoadingProxies()*/.UseSqlServer(WebApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
+			});
+
+			WebApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>((serviceProvider) =>
+			{
+				var connection = WebApplicationBuilder.Configuration.GetConnectionString("Redis");
+				return ConnectionMultiplexer.Connect(connection);
 			});
 
 			WebApplicationBuilder.Services.AddApplicationServices();
