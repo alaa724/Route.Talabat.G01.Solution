@@ -13,6 +13,9 @@ namespace Route.Talabat.APIs.Helpers
 				.ForMember(P => P.Category, O => O.MapFrom(S => S.Category.Name))
 				.ForMember(P => P.PictureUrl , O => O.MapFrom<ProductPictureUrlResolver>());
 
+			CreateMap<CustomerBasketDto, CustomerBasket>();
+			CreateMap<BasketItemDto, BasketItem>();
+
 		}
 	}
 }
