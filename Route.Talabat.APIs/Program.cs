@@ -51,20 +51,7 @@ namespace Route.Talabat.APIs
 
 			WebApplicationBuilder.Services.AddIdentity<ApplicationUsers, IdentityRole>().AddEntityFrameworkStores<ApplicationIdentityDbContext>();
 
-			WebApplicationBuilder.Services.AddAuthentication().AddJwtBearer("Bearer", options =>
-			{
-				options.TokenValidationParameters = new TokenValidationParameters()
-				{
-					ValidateIssuer = true,
-					ValidIssuer = WebApplicationBuilder.Configuration["JWT:ValidIssure"],
-					ValidateAudience = true,
-					ValidAudience = WebApplicationBuilder.Configuration["JWT:ValidAudiance"],
-					ValidateIssuerSigningKey = true,
-					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(WebApplicationBuilder.Configuration["JWT:AuthKey"] ?? string.Empty)),
-					ValidateLifetime = true,
-					ClockSkew = TimeSpan.Zero,
-				};
-			});
+			WebApplicationBuilder.Services.AddAuthServices(WebApplicationBuilder.Configuration);
 
 			#endregion
 

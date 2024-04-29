@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Route.Talabat.APIs.Errors;
 using Route.Talabat.APIs.Helpers;
+using System.Text;
 using Talabat.Application.AuthService;
 using Talabat.Core.Repository.Contract;
 using Talabat.Core.Services.Contract;
@@ -15,8 +17,6 @@ namespace Route.Talabat.APIs.Extensions
 			services.AddScoped(typeof(IBasketRepository) , typeof(BasketRepository));
 
 			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-			services.AddScoped(typeof(IAuthService), typeof(AuthService));
 
 			services.AddAutoMapper(typeof(MappingProfiles));
 
@@ -41,6 +41,28 @@ namespace Route.Talabat.APIs.Extensions
 
 			return services;
 
+		}
+
+		public static IServiceCollection AddAuthServices(this IServiceCollection services , IConfiguration configuration)
+		{
+			services.AddAuthentication().AddJwtBearer("Bearer", options =>
+			{
+				options.TokenValidationParameters = new TokenValidationParameters()
+				{
+					ValidateIssuer = true,
+					ValidIssuer = configuration["JWT:ValidIssure"],
+					ValidateAudience = true,
+					ValidAudience = configuration["JWT:ValidAudiance"],
+					ValidateIssuerSigningKey = true,
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:AuthKey"] ?? string.Empty)),
+					ValidateLifetime = true,
+					ClockSkew = TimeSpan.Zero,
+				};
+			});
+
+			services.AddScoped(typeof(IAuthService), typeof(AuthService));
+
+			return services;
 		}
 	}
 }
