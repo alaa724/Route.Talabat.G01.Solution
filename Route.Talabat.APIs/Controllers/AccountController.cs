@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Route.Talabat.APIs.DTO.IdentityDto;
 using Route.Talabat.APIs.Errors;
 using Talabat.Core.Entities.Identity;
+using Talabat.Core.Services.Contract;
 
 namespace Route.Talabat.APIs.Controllers
 {
@@ -11,13 +12,16 @@ namespace Route.Talabat.APIs.Controllers
 	{
 		private readonly UserManager<ApplicationUsers> _userManager;
 		private readonly SignInManager<ApplicationUsers> _signInManager;
+		private readonly IAuthService _authService;
 
 		public AccountController(
 			UserManager<ApplicationUsers> userManager,
-			SignInManager<ApplicationUsers> signInManager) 
+			SignInManager<ApplicationUsers> signInManager,
+			IAuthService authService) 
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
+			_authService = authService;
 		}
 
 		[HttpPost("login")] // POST : /api/Account/login
@@ -29,13 +33,13 @@ namespace Route.Talabat.APIs.Controllers
 
 			var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
 
-			if (result.Succeeded) return Unauthorized(new ApiResponse(401, "Invalid Login"));
+			if (!result.Succeeded) return Unauthorized(new ApiResponse(401, "Invalid Login"));
 
 			return Ok(new UserDto()
 			{
 				DisplayName = user.DisplayName,
 				Email = user.Email,
-				Token = "This will be token"
+				Token = await _authService.CreateTokenAsync(user, _userManager)
 			});
 		}
 
@@ -59,7 +63,7 @@ namespace Route.Talabat.APIs.Controllers
 			{
 				DisplayName = user.DisplayName,
 				Email = user.Email,
-				Token = "This will be token"
+				Token = await _authService.CreateTokenAsync(user, _userManager)
 			});
 		}
 

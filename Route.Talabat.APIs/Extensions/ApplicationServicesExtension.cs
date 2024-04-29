@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Route.Talabat.APIs.Errors;
 using Route.Talabat.APIs.Helpers;
+using Talabat.Application.AuthService;
 using Talabat.Core.Repository.Contract;
+using Talabat.Core.Services.Contract;
 using Talabat.Infrastructure;
 
 namespace Route.Talabat.APIs.Extensions
@@ -13,6 +15,8 @@ namespace Route.Talabat.APIs.Extensions
 			services.AddScoped(typeof(IBasketRepository) , typeof(BasketRepository));
 
 			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+			services.AddScoped(typeof(IAuthService), typeof(AuthService));
 
 			services.AddAutoMapper(typeof(MappingProfiles));
 
