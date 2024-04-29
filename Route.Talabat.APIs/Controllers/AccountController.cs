@@ -38,5 +38,30 @@ namespace Route.Talabat.APIs.Controllers
 				Token = "This will be token"
 			});
 		}
+
+
+		[HttpPost("register")] // POST : /api/Account/register
+		public async Task<ActionResult<UserDto>> Register(RegisterDto model)
+		{
+			var user = new ApplicationUsers()
+			{
+				DisplayName = model.DisplayName,
+				Email = model.Email,
+				UserName = model.Email.Split("@")[0],
+				PhoneNumber = model.Phone
+			};
+
+			var result = await _userManager.CreateAsync(user, model.Password);
+
+			if (!result.Succeeded) return Unauthorized(new ApiValidationErrorResponse() { Errors = result.Errors.Select(E => E.Description) });
+
+			return Ok(new UserDto()
+			{
+				DisplayName = user.DisplayName,
+				Email = user.Email,
+				Token = "This will be token"
+			});
+		}
+
 	}
 }
