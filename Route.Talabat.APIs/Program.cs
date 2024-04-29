@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Route.Talabat.APIs.Errors;
@@ -6,6 +7,7 @@ using Route.Talabat.APIs.Extensions;
 using Route.Talabat.APIs.Helpers;
 using Route.Talabat.APIs.Middlewares;
 using StackExchange.Redis;
+using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repository.Contract;
 using Talabat.Infrastructure;
 using Talabat.Infrastructure._Identity;
@@ -45,7 +47,7 @@ namespace Route.Talabat.APIs
 			});
 
 
-
+			WebApplicationBuilder.Services.AddIdentity<ApplicationUsers, IdentityRole>().AddEntityFrameworkStores<ApplicationIdentityDbContext>();
 
 			#endregion
 
@@ -68,6 +70,10 @@ namespace Route.Talabat.APIs
 				await StoreContextSeed.SeedAsync(_dbContext); // DataSeeding
 
 				await _IdentitydbContext.Database.MigrateAsync(); // Update-Database
+
+				var _userManager = services.GetRequiredService<UserManager<ApplicationUsers>>();
+
+				await ApplicationIdentityDbContextSeed.SeedUserAsync(_userManager);
 			}
 			catch (Exception ex)
 			{
