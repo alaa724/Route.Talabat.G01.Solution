@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Route.Talabat.APIs.DTO;
@@ -30,8 +31,9 @@ namespace Route.Talabat.APIs.Controllers
 			_mapper = mapper;
 		}
 
-		// api/Product
-		[HttpGet]
+		
+		[Authorize(AuthenticationSchemes ="Bearer")]
+		[HttpGet]   //Get : api/Product
 		public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery] ProductSpecParams specParams)
 		{
 			var spec = new ProductWithBrandAndCategorySpecification(specParams);

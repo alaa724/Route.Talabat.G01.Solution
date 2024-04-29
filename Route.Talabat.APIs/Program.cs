@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Route.Talabat.APIs.Errors;
 using Route.Talabat.APIs.Extensions;
 using Route.Talabat.APIs.Helpers;
 using Route.Talabat.APIs.Middlewares;
 using StackExchange.Redis;
+using System.Text;
 using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repository.Contract;
 using Talabat.Infrastructure;
@@ -48,6 +50,21 @@ namespace Route.Talabat.APIs
 
 
 			WebApplicationBuilder.Services.AddIdentity<ApplicationUsers, IdentityRole>().AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+
+			WebApplicationBuilder.Services.AddAuthentication().AddJwtBearer("Bearer", options =>
+			{
+				options.TokenValidationParameters = new TokenValidationParameters()
+				{
+					ValidateIssuer = true,
+					ValidIssuer = WebApplicationBuilder.Configuration["JWT:ValidIssure"],
+					ValidateAudience = true,
+					ValidAudience = WebApplicationBuilder.Configuration["JWT:ValidAudiance"],
+					ValidateIssuerSigningKey = true,
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(WebApplicationBuilder.Configuration["JWT:AuthKey"] ?? string.Empty)),
+					ValidateLifetime = true,
+					ClockSkew = TimeSpan.Zero,
+				};
+			});
 
 			#endregion
 
