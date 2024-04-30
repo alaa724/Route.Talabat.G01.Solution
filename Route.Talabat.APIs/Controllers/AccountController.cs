@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,15 +17,18 @@ namespace Route.Talabat.APIs.Controllers
 		private readonly UserManager<ApplicationUsers> _userManager;
 		private readonly SignInManager<ApplicationUsers> _signInManager;
 		private readonly IAuthService _authService;
+		private readonly IMapper _mapper;
 
 		public AccountController(
 			UserManager<ApplicationUsers> userManager,
 			SignInManager<ApplicationUsers> signInManager,
-			IAuthService authService) 
+			IAuthService authService,
+			IMapper mapper) 
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
 			_authService = authService;
+			_mapper = mapper;
 		}
 
 		[HttpPost("login")] // POST : /api/Account/login
@@ -88,12 +92,12 @@ namespace Route.Talabat.APIs.Controllers
 
 		[Authorize]
 		[HttpGet("address")] // GET : /api/account/address
-		public async Task<ActionResult<Address>> GetUserAddress()
+		public async Task<ActionResult<AddressDto>> GetUserAddress()
 		{
 
 			var user = await _userManager.FindUserWithAddressAsync(User);
 
-			return Ok(user.Address);
+			return Ok(_mapper.Map<AddressDto>(user.Address));
 		}
 
 
