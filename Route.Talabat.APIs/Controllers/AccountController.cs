@@ -101,5 +101,25 @@ namespace Route.Talabat.APIs.Controllers
 		}
 
 
+		[Authorize]
+		[HttpPut("address")] // POT : /api/Account/address
+		public async Task<ActionResult<Address>> UpdateUserAddress(AddressDto address)
+		{
+			var updatedAddress = _mapper.Map<Address>(address);
+
+			var user = await _userManager.FindUserWithAddressAsync(User);
+
+			updatedAddress.Id = user.Address.Id;
+
+			user.Address = updatedAddress;
+
+			var result = await _userManager.UpdateAsync(user);
+
+			if(!result.Succeeded) return Unauthorized(new ApiValidationErrorResponse() { Errors = result.Errors.Select(E => E.Description) });
+
+			return Ok(updatedAddress);
+		}
+
+
 	}
 }
