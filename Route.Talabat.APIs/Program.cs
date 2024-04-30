@@ -1,13 +1,18 @@
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Route.Talabat.APIs.Errors;
 using Route.Talabat.APIs.Extensions;
 using Route.Talabat.APIs.Helpers;
 using Route.Talabat.APIs.Middlewares;
 using StackExchange.Redis;
+using System.Text;
+using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repository.Contract;
 using Talabat.Infrastructure;
+using Talabat.Infrastructure._Identity;
 using Talabat.Infrastructure.Data;
 
 namespace Route.Talabat.APIs
@@ -25,9 +30,16 @@ namespace Route.Talabat.APIs
 
 			WebApplicationBuilder.Services.AddSwaggerServices();
 
+			WebApplicationBuilder.Services.AddApplicationServices();
+
 			WebApplicationBuilder.Services.AddDbContext<StoreDbContext>(options =>
 			{
-				options/*.UseLazyLoadingProxies()*/.UseSqlServer(WebApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
+				options.UseSqlServer(WebApplicationBuilder.Configuration.GetConnectionString("DefaultConnection"));
+			});
+
+			WebApplicationBuilder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
+			{
+				options.UseSqlServer(WebApplicationBuilder.Configuration.GetConnectionString("IdentityConnection"));
 			});
 
 			WebApplicationBuilder.Services.AddSingleton<IConnectionMultiplexer>((serviceProvider) =>
@@ -36,7 +48,10 @@ namespace Route.Talabat.APIs
 				return ConnectionMultiplexer.Connect(connection);
 			});
 
-			WebApplicationBuilder.Services.AddApplicationServices();
+
+			WebApplicationBuilder.Services.AddIdentity<ApplicationUsers, IdentityRole>().AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+
+			WebApplicationBuilder.Services.AddAuthServices(WebApplicationBuilder.Configuration);
 
 			#endregion
 
@@ -48,6 +63,8 @@ namespace Route.Talabat.APIs
 
 			var _dbContext = services.GetRequiredService<StoreDbContext>(); // Ask CLR for Creating Object from DbContext "Explicitly"
 
+			var _IdentitydbContext = services.GetRequiredService<ApplicationIdentityDbContext>(); // Ask CLR for Creating Object from DbContext "Explicitly"
+
 			var loggerFactory = services.GetRequiredService<ILoggerFactory>();
 
 			try
@@ -55,6 +72,12 @@ namespace Route.Talabat.APIs
 				await _dbContext.Database.MigrateAsync(); // Update-Database
 
 				await StoreContextSeed.SeedAsync(_dbContext); // DataSeeding
+
+				await _IdentitydbContext.Database.MigrateAsync(); // Update-Database
+
+				var _userManager = services.GetRequiredService<UserManager<ApplicationUsers>>();
+
+				await ApplicationIdentityDbContextSeed.SeedUserAsync(_userManager);
 			}
 			catch (Exception ex)
 			{
