@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Route.Talabat.APIs.DTO.IdentityDto;
 using Route.Talabat.APIs.Errors;
+using System.Security.Claims;
 using Talabat.Core.Entities.Identity;
 using Talabat.Core.Services.Contract;
 
@@ -63,6 +65,22 @@ namespace Route.Talabat.APIs.Controllers
 			{
 				DisplayName = user.DisplayName,
 				Email = user.Email,
+				Token = await _authService.CreateTokenAsync(user, _userManager)
+			});
+		}
+
+		[Authorize]
+		[HttpGet] // GET : /api/account
+		public async Task<ActionResult<UserDto>> GetCurrentUser()
+		{
+			var email = User.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
+
+			var user = await _userManager.FindByEmailAsync(email);
+
+			return Ok(new UserDto()
+			{
+				DisplayName = user?.DisplayName ?? string.Empty,
+				Email = user?.Email ?? string.Empty,
 				Token = await _authService.CreateTokenAsync(user, _userManager)
 			});
 		}
