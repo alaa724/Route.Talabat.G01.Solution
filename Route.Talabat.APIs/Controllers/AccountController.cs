@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Route.Talabat.APIs.DTO.IdentityDto;
 using Route.Talabat.APIs.Errors;
+using Route.Talabat.APIs.Extensions;
 using System.Security.Claims;
 using Talabat.Core.Entities.Identity;
 using Talabat.Core.Services.Contract;
@@ -84,6 +85,17 @@ namespace Route.Talabat.APIs.Controllers
 				Token = await _authService.CreateTokenAsync(user, _userManager)
 			});
 		}
+
+		[Authorize]
+		[HttpGet("address")] // GET : /api/account/address
+		public async Task<ActionResult<Address>> GetUserAddress()
+		{
+
+			var user = await _userManager.FindUserWithAddressAsync(User);
+
+			return Ok(user.Address);
+		}
+
 
 	}
 }
