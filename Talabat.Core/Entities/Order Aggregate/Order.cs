@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Talabat.Core.Entities.Order_Aggregate
 
 		public Address ShippingAddress { get; set; } = null!;
 
-		public DeliveryMethod DeliveryMethod { get; set; } = null!; //Navigational Property [One]
+		public DeliveryMethod? DeliveryMethod { get; set; } = null!; //Navigational Property [One]
 
 		public ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>(); //Navigational Property [Many]
 
