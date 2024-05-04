@@ -9,7 +9,7 @@ namespace Talabat.Infrastructure.Data
 		public async static Task SeedAsync(StoreDbContext _dbContext)
 		{
 
-			if (_dbContext.ProductBrands.Count() == 0)
+			if (!_dbContext.ProductBrands.Any())
 			{
 				var brandData = File.ReadAllText("../Talabat.Infrastructure/Data/DataSeed/brands.json");
 				var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandData);
@@ -24,7 +24,7 @@ namespace Talabat.Infrastructure.Data
 					await _dbContext.SaveChangesAsync();
 				}
 			}
-			if (_dbContext.ProductCategories.Count() == 0)
+			if (!_dbContext.ProductCategories.Any())
 			{
 
 				var categoryData = File.ReadAllText("../Talabat.Infrastructure/Data/DataSeed/categories.json");
@@ -40,7 +40,7 @@ namespace Talabat.Infrastructure.Data
 					await _dbContext.SaveChangesAsync();
 				}
 			}
-			if (_dbContext.Products.Count() == 0)
+			if (!_dbContext.Products.Any())
 			{
 
 				var productData = File.ReadAllText("../Talabat.Infrastructure/Data/DataSeed/products.json");
@@ -57,7 +57,7 @@ namespace Talabat.Infrastructure.Data
 					await _dbContext.SaveChangesAsync();
 				}
 			}
-			if (_dbContext.DeliveryMethods.Count() == 0)
+			if (!_dbContext.DeliveryMethods.Any())
 			{
 
 				var delivaryMethodData = File.ReadAllText("../Talabat.Infrastructure/Data/DataSeed/delivery.json");
