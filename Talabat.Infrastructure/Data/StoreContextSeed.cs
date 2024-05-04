@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Talabat.Core.Entities;
+using Talabat.Core.Entities.Order_Aggregate;
 
 namespace Talabat.Infrastructure.Data
 {
@@ -7,8 +8,8 @@ namespace Talabat.Infrastructure.Data
 	{
 		public async static Task SeedAsync(StoreDbContext _dbContext)
 		{
-			
-			if(_dbContext.ProductBrands.Count() == 0)
+
+			if (_dbContext.ProductBrands.Count() == 0)
 			{
 				var brandData = File.ReadAllText("../Talabat.Infrastructure/Data/DataSeed/brands.json");
 				var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandData);
@@ -16,7 +17,7 @@ namespace Talabat.Infrastructure.Data
 
 				if (brands?.Count() > 0)
 				{
-					foreach(var brand in brands)
+					foreach (var brand in brands)
 					{
 						_dbContext.Set<ProductBrand>().Add(brand);
 					}
@@ -52,6 +53,23 @@ namespace Talabat.Infrastructure.Data
 					{
 
 						_dbContext.Set<Product>().Add(product);
+					}
+					await _dbContext.SaveChangesAsync();
+				}
+			}
+			if (_dbContext.DeliveryMethods.Count() == 0)
+			{
+
+				var delivaryMethodData = File.ReadAllText("../Talabat.Infrastructure/Data/DataSeed/delivery.json");
+				var delivaryMethods = JsonSerializer.Deserialize<List<DeliveryMethod>>(delivaryMethodData);
+
+
+				if (delivaryMethods?.Count() > 0)
+				{
+					foreach (var deliveryMethod in delivaryMethods)
+					{
+
+						_dbContext.Set<DeliveryMethod>().Add(deliveryMethod);
 					}
 					await _dbContext.SaveChangesAsync();
 				}
