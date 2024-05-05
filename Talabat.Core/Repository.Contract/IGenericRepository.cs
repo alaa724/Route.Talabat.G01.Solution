@@ -15,5 +15,11 @@ namespace Talabat.Core.Repository.Contract
 		Task<T?> GetWithSpecAsync(ISpecification<T> spec /*, int id*/);
 
 		Task<int> GetCountAsync(ISpecification<T> spec);
+
+		void Add(T entity);
+
+		void Update(T entity);
+
+		void Delete(T entity);
 	}
 }

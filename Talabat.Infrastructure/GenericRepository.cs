@@ -16,6 +16,16 @@ namespace Talabat.Infrastructure
 			_dbContext = dbContext;
 		}
 
+		public void Add(T entity)
+			=> _dbContext.Set<T>().Add(entity);
+
+
+		public void Update(T entity)
+			=> _dbContext.Set<T>().Update(entity);
+
+		public void Delete(T entity)
+			=> _dbContext.Set<T>().Remove(entity);
+
 		public async Task<IReadOnlyList<T>> GetAllAsync()
 		{
 			//if (typeof(T) == typeof(Product))
