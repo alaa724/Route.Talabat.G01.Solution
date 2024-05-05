@@ -4,6 +4,7 @@ using Route.Talabat.APIs.Errors;
 using Route.Talabat.APIs.Helpers;
 using System.Text;
 using Talabat.Application.AuthService;
+using Talabat.Core;
 using Talabat.Core.Repository.Contract;
 using Talabat.Core.Services.Contract;
 using Talabat.Infrastructure;
@@ -14,9 +15,11 @@ namespace Route.Talabat.APIs.Extensions
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
+			services.AddScoped(typeof(IUniteOfWork), typeof(UniteOfWork));
+
 			services.AddScoped(typeof(IBasketRepository) , typeof(BasketRepository));
 
-			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+			//services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 			services.AddAutoMapper(typeof(MappingProfiles));
 
