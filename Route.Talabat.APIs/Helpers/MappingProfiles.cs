@@ -27,6 +27,16 @@ namespace Route.Talabat.APIs.Helpers
 
 			CreateMap<AddressDto, Address>();
 
+			CreateMap<Order, OrderToReturnDto>()
+				.ForMember(d => d.DeliveryMethod, O => O.MapFrom(S => S.DeliveryMethod.ShortName))
+				.ForMember(d => d.DeliveryMethodCost , O => O.MapFrom(S => S.DeliveryMethod.Cost));
+
+			CreateMap<OrderItem, OrderItemDto>()
+				.ForMember(d => d.ProductId, O => O.MapFrom(S => S.Product.ProductId))
+				.ForMember(d => d.ProductName , O => O.MapFrom(S => S.Product.ProductName))
+				.ForMember(d => d.ProductUrl , O => O.MapFrom(S => S.Product.ProductUrl))
+				.ForMember(d => d.ProductUrl , O => O.MapFrom<OrderItemPictureUrlResolver>());
+
 
 
 		}
