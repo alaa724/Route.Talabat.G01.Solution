@@ -38,12 +38,24 @@ namespace Route.Talabat.APIs.Controllers
 			return Ok(order);
 		}
 
-		[HttpGet] // Get : /api/Orders
+		[HttpGet] // Get : /api/Orders?email=alaahamdy@gmail.com
 		public async Task<ActionResult<IReadOnlyList<Order>>> GetOrderForUser(string email)
 		{
 			var orders = await _orderService.GetOrderForUserAsync(email);
 
 			return Ok(orders);
 		}
+
+
+		[HttpGet("{id}")] // Get : /api/orders/1?email=alaahamdy@gmail.com
+		public async Task<ActionResult<Order>> GetOrdersForUser(int id , string email)
+		{
+			var order = await _orderService.GetOrderByIdForUserAsync(id , email);
+
+			if (order is null) return NotFound(new ApiResponse(404));
+
+			return Ok(order);
+		}
+
 	}
 }
