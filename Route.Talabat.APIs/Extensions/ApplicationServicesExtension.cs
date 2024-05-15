@@ -17,11 +17,11 @@ namespace Route.Talabat.APIs.Extensions
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
+			services.AddScoped(typeof(IUniteOfWork), typeof(UniteOfWork));
+
 			services.AddScoped(typeof(IProductService), typeof(ProductService));
 
 			services.AddScoped(typeof(IOrderService), typeof(OrderService));
-
-			services.AddScoped(typeof(IUniteOfWork), typeof(UniteOfWork));
 
 			services.AddScoped(typeof(IBasketRepository) , typeof(BasketRepository));
 

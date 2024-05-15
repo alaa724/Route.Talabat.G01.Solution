@@ -23,7 +23,7 @@ namespace Route.Talabat.APIs.Helpers
 			CreateMap<CustomerBasketDto, CustomerBasket>();
 			CreateMap<BasketItemDto, BasketItem>();
 
-			CreateMap<IdentityAddress, IdentityAddressDto>();
+			CreateMap<IdentityAddress, IdentityAddressDto>().ReverseMap();
 
 			CreateMap<AddressDto, Address>();
 

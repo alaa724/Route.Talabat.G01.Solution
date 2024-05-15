@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Route.Talabat.APIs.DTO;
 using Route.Talabat.APIs.Errors;
+using System.Security.Claims;
+using Talabat.Application.OrderService;
 using Talabat.Core.Entities.Order_Aggregate;
 using Talabat.Core.Services.Contract;
 
@@ -31,7 +33,9 @@ namespace Route.Talabat.APIs.Controllers
 		{
 			var address = _mapper.Map<AddressDto, Address>(orderDto.ShippingAddress);
 
-			var order = await _orderService.CreateOrderAsync(orderDto.BuyerEmail, orderDto.BasketId, orderDto.DeliveryMethodId, address);
+			var buyerEmail = User.FindFirstValue(ClaimTypes.Email);
+
+			var order = await _orderService.CreateOrderAsync(buyerEmail, orderDto.BasketId, orderDto.DeliveryMethodId, address);
 
 			if (order is null) return BadRequest(new ApiResponse(400));
 
@@ -39,8 +43,10 @@ namespace Route.Talabat.APIs.Controllers
 		}
 
 		[HttpGet] // Get : /api/Orders?email=alaahamdy@gmail.com
-		public async Task<ActionResult<IReadOnlyList<OrderToReturnDto>>> GetOrderForUser(string email)
+		public async Task<ActionResult<IReadOnlyList<OrderToReturnDto>>> GetOrderForUser()
 		{
+			var email = User.FindFirstValue(ClaimTypes.Email);
+
 			var orders = await _orderService.GetOrderForUserAsync(email);
 
 			return Ok(_mapper.Map <IReadOnlyList<Order>, IReadOnlyList<OrderToReturnDto>>(orders));
