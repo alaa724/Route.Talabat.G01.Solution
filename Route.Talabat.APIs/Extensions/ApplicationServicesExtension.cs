@@ -5,6 +5,7 @@ using Route.Talabat.APIs.Helpers;
 using System.Text;
 using Talabat.Application.AuthService;
 using Talabat.Application.OrderService;
+using Talabat.Application.PaymentServices;
 using Talabat.Application.ProductService;
 using Talabat.Core;
 using Talabat.Core.Repository.Contract;
@@ -24,6 +25,8 @@ namespace Route.Talabat.APIs.Extensions
 			services.AddScoped(typeof(IOrderService), typeof(OrderService));
 
 			services.AddScoped(typeof(IBasketRepository) , typeof(BasketRepository));
+
+			services.AddScoped(typeof(IPaymentService), typeof(PaymentService));
 
 			//services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
