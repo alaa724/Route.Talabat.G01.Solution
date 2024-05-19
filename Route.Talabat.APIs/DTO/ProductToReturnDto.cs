@@ -1,14 +1,15 @@
-﻿using Talabat.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using Talabat.Core.Entities;
 
 namespace Route.Talabat.APIs.DTO
 {
 	public class ProductToReturnDto
 	{
-		public int id { get; set; }
+		public int id { get; set; }		
 		public string Name { get; set; }
-		public string Description { get; set; }
+        public string Description { get; set; }
 		public string PictureUrl { get; set; }
-		public decimal Price { get; set; }
+        public decimal Price { get; set; }
 
 		public int BrandId { get; set; } 
 		public string Brand { get; set; } 
