@@ -14,5 +14,6 @@ namespace Talabat.Core
 		public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity;
 
 		public Task<int> CompleteAsync();
+
 	}
 }
