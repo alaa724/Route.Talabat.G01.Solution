@@ -1,15 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Route.Talabat.APIs.Errors;
 using Route.Talabat.APIs.Helpers;
 using System.Text;
 using Talabat.Application.AuthService;
 using Talabat.Application.OrderService;
+using Talabat.Application.PaymentServices;
 using Talabat.Application.ProductService;
 using Talabat.Core;
+using Talabat.Core.Entities.Identity;
 using Talabat.Core.Repository.Contract;
 using Talabat.Core.Services.Contract;
 using Talabat.Infrastructure;
+using Talabat.Infrastructure._Identity;
 
 namespace Route.Talabat.APIs.Extensions
 {
@@ -24,6 +28,8 @@ namespace Route.Talabat.APIs.Extensions
 			services.AddScoped(typeof(IOrderService), typeof(OrderService));
 
 			services.AddScoped(typeof(IBasketRepository) , typeof(BasketRepository));
+
+			services.AddScoped(typeof(IPaymentService), typeof(PaymentService));
 
 			//services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
@@ -69,7 +75,10 @@ namespace Route.Talabat.APIs.Extensions
 				};
 			});
 
-			services.AddScoped(typeof(IAuthService), typeof(AuthService));
+            //services.AddIdentity<ApplicationUsers, IdentityRole>().AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+
+
+            services.AddScoped(typeof(IAuthService), typeof(AuthService));
 
 			return services;
 		}

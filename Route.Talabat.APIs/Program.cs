@@ -48,10 +48,17 @@ namespace Route.Talabat.APIs
 				return ConnectionMultiplexer.Connect(connection);
 			});
 
+			WebApplicationBuilder.Services.AddAuthServices(WebApplicationBuilder.Configuration);
 
 			WebApplicationBuilder.Services.AddIdentity<ApplicationUsers, IdentityRole>().AddEntityFrameworkStores<ApplicationIdentityDbContext>();
 
-			WebApplicationBuilder.Services.AddAuthServices(WebApplicationBuilder.Configuration);
+            WebApplicationBuilder.Services.AddCors(options =>
+			{
+				options.AddPolicy("MyPolicy", policyOptions =>
+				{
+					policyOptions.AllowAnyHeader().AllowAnyMethod().WithOrigins(WebApplicationBuilder.Configuration["FrontBaseUrl"]);
+				});
+			});
 
 			#endregion
 
@@ -101,13 +108,12 @@ namespace Route.Talabat.APIs
 
 			app.UseHttpsRedirection();
 
-
 			app.UseStaticFiles();
 
+			app.UseCors("MyPolicy");
 
 			app.MapControllers();
 
-			
 			#endregion
 
 			app.Run();

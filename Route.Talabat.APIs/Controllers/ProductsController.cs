@@ -14,7 +14,7 @@ using Talabat.Core.Specifications.ProductSpecification;
 namespace Route.Talabat.APIs.Controllers
 {
 	
-	public class ProductController : BaseApiController
+	public class ProductsController : BaseApiController
 	{
 		private readonly IProductService _productService;
 		private readonly IMapper _mapper;
@@ -22,7 +22,7 @@ namespace Route.Talabat.APIs.Controllers
 		///private readonly IGenericRepository<ProductBrand> _brandRepo;
 		///private readonly IGenericRepository<ProductCategory> _categoryRepo;
 
-		public ProductController(
+		public ProductsController(
 			IProductService productService,
 			IMapper mapper) 
 			///IGenericRepository<Product> productsRepo,
@@ -37,7 +37,7 @@ namespace Route.Talabat.APIs.Controllers
 		}
 
 		
-		[Authorize(AuthenticationSchemes ="Bearer")]
+		//[Authorize(AuthenticationSchemes ="Bearer")]
 		[HttpGet]   //Get : api/Product
 		public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery] ProductSpecParams specParams)
 		{
@@ -49,7 +49,6 @@ namespace Route.Talabat.APIs.Controllers
 
 			return Ok(new Pagination<ProductToReturnDto>(specParams.PageIndex ,specParams.PageSize , count ,  data));
 		}
-
 
 		[ProducesResponseType(typeof(ProductToReturnDto) , StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ApiResponse) , StatusCodes.Status404NotFound)]
@@ -75,7 +74,7 @@ namespace Route.Talabat.APIs.Controllers
 			var brands = await _productService.GetBrandsAsync();
 			return Ok(brands);
 		}
-
+		
 		[HttpGet("categories")] // Get : api/Product/categories
 		public async Task<ActionResult<IReadOnlyList<ProductCategory>>> GetCategories()
 		{
