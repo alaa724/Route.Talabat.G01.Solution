@@ -36,7 +36,7 @@ namespace Route.Talabat.APIs.Controllers
 			///_categoryRepo = categoryRepo;
 		}
 
-		
+		[CachedAttribute(600)]
 		//[Authorize(AuthenticationSchemes ="Bearer")]
 		[HttpGet]   //Get : api/Product
 		public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery] ProductSpecParams specParams)
