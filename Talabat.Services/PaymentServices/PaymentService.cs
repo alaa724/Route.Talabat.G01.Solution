@@ -38,13 +38,13 @@ namespace Talabat.Application.PaymentServices
             if (basket is null)
                 return null;
 
-            var shippeingPrice = 0m;
+            var shippingPrice = 0m;
 
             if (basket.DeliveryMethodId.HasValue)
             {
                 var deliveryMethod = await _uniteOfWork.Repository<DeliveryMethod>().GetAsync(basket.DeliveryMethodId.Value);
-                shippeingPrice = deliveryMethod.Cost;
-                basket.ShippingPrice = shippeingPrice;
+                shippingPrice = deliveryMethod.Cost;
+                basket.ShippingPrice = shippingPrice;
             }
 
             if(basket.Items?.Count > 0)
@@ -68,7 +68,7 @@ namespace Talabat.Application.PaymentServices
             {
                 var options = new PaymentIntentCreateOptions()
                 {
-                    Amount = (long)basket.Items.Sum(item => item.Price * 100 * item.Quntity) + (long)shippeingPrice * 100,
+                    Amount = (long)basket.Items.Sum(item => item.Price * 100 * item.Quantity) + (long)shippingPrice * 100,
                     Currency = "usd",
                     PaymentMethodTypes = new List<string>() { "card" }
                 };
@@ -82,7 +82,7 @@ namespace Talabat.Application.PaymentServices
             {
                 var options = new PaymentIntentUpdateOptions()
                 {
-                    Amount = (long)basket.Items.Sum(item => item.Price * 100 * item.Quntity) + (long)shippeingPrice * 100
+                    Amount = (long)basket.Items.Sum(item => item.Price * 100 * item.Quantity) + (long)shippingPrice * 100
                 };
 
                 paymentIntent = await paymentIntentService.UpdateAsync(basket.PaymentIntentId,options);

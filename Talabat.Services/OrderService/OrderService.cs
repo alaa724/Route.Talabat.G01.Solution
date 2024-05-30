@@ -59,7 +59,7 @@ namespace Talabat.Application.OrderService
 
 					var productItemOrdered = new ProductItemOrder(product.Id, product.Name, product.PictureUrl);
 
-					var orderItem = new OrderItem(productItemOrdered, product.Price, item.Quntity);
+					var orderItem = new OrderItem(productItemOrdered, product.Price, item.Quantity);
 
 					orderItems.Add(orderItem);
 				}
