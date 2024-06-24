@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 namespace Talabat.Core.Entities.Order_Aggregate
 {
     //[Owned]
-	public class Address
+	public class OrderAddress
 	{
-		private Address()
+		private OrderAddress()
 		{
 		}
 
-		public Address(string firstName, string lastName, string street, string city, string country)
+		public OrderAddress(string firstName, string lastName, string street, string city, string country)
 		{
 			FirstName = firstName;
 			LastName = lastName;

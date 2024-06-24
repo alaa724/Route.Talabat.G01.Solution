@@ -17,7 +17,7 @@ namespace Talabat.Core.Specifications.OrderSpecification
 
 			AddOrderByDesc(O => O.OrderDate);
 		}
-		public OrderSpecifications(int orderId , string buyerEmail)
+		public OrderSpecifications(string buyerEmail, int orderId )
 			: base(O => O.Id == orderId && O.BuyerEmail == buyerEmail)
 		{
 			Includes.Add(O => O.DeliveryMethod);

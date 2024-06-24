@@ -4,7 +4,7 @@ using Route.Talabat.APIs.DTO.IdentityDto;
 using Talabat.Core.Entities;
 using Talabat.Core.Entities.Identity;
 using Talabat.Core.Entities.Order_Aggregate;
-using Address = Talabat.Core.Entities.Order_Aggregate.Address;
+//using OrderAddress = Talabat.Core.Entities.Order_Aggregate.OrderAddress;
 using IdentityAddressDto = Route.Talabat.APIs.DTO.IdentityDto.AddressDto;
 using IdentityAddress = Talabat.Core.Entities.Identity.Address;
 using AddressDto = Route.Talabat.APIs.DTO.AddressDto;
@@ -25,8 +25,6 @@ namespace Route.Talabat.APIs.Helpers
 
 			CreateMap<IdentityAddress, IdentityAddressDto>().ReverseMap();
 
-			CreateMap<AddressDto, Address>();
-
 			CreateMap<Order, OrderToReturnDto>()
 				.ForMember(d => d.DeliveryMethod, O => O.MapFrom(S => S.DeliveryMethod.ShortName))
 				.ForMember(d => d.DeliveryMethodCost , O => O.MapFrom(S => S.DeliveryMethod.Cost));
@@ -36,6 +34,9 @@ namespace Route.Talabat.APIs.Helpers
 				.ForMember(d => d.ProductName , O => O.MapFrom(S => S.Product.ProductName))
 				.ForMember(d => d.ProductUrl , O => O.MapFrom(S => S.Product.ProductUrl))
 				.ForMember(d => d.ProductUrl , O => O.MapFrom<OrderItemPictureUrlResolver>());
+
+			CreateMap<AddressDto, OrderAddress>().ReverseMap();
+
 
 
 

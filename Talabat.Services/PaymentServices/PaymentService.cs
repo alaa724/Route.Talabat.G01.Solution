@@ -35,9 +35,8 @@ namespace Talabat.Application.PaymentServices
             StripeConfiguration.ApiKey = _configuration["StripeSettinges:Secretkey"];
 
             var basket = await _basketRepo.GetBasketAsync(basketId);
-            if (basket is null)
-                return null;
-
+            if (basket is null) return null;
+                
             var shippingPrice = 0m;
 
             if (basket.DeliveryMethodId.HasValue)
@@ -47,7 +46,7 @@ namespace Talabat.Application.PaymentServices
                 basket.ShippingPrice = shippingPrice;
             }
 
-            if(basket.Items?.Count > 0)
+            if(basket.Items.Count > 0)
             {
                 var productRepo = _uniteOfWork.Repository<Product>();
 
@@ -68,24 +67,24 @@ namespace Talabat.Application.PaymentServices
             {
                 var options = new PaymentIntentCreateOptions()
                 {
-                    Amount = (long)basket.Items.Sum(item => item.Price * 100 * item.Quantity) + (long)shippingPrice * 100,
+                    Amount = (long)basket.Items.Sum(item => item.Price * 100 * item.Quntity) + (long)shippingPrice * 100,
                     Currency = "usd",
                     PaymentMethodTypes = new List<string>() { "card" }
                 };
 
                 paymentIntent = await paymentIntentService.CreateAsync(options); // Integration With Stripe
 
-                basket.Id = paymentIntent.Id;
+                basket.PaymentIntentId = paymentIntent.Id;
                 basket.ClientSecret = paymentIntent.ClientSecret;
             }
             else // Update Existing PaymentIntent
             {
                 var options = new PaymentIntentUpdateOptions()
                 {
-                    Amount = (long)basket.Items.Sum(item => item.Price * 100 * item.Quantity) + (long)shippingPrice * 100
+                    Amount = (long)basket.Items.Sum(item => item.Price * 100 * item.Quntity) + (long)shippingPrice * 100
                 };
 
-                paymentIntent = await paymentIntentService.UpdateAsync(basket.PaymentIntentId,options);
+                /*paymentIntent = */await paymentIntentService.UpdateAsync(basket.PaymentIntentId,options);
             }
 
             await _basketRepo.UpdateBasketAsync(basket);

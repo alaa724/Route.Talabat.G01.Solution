@@ -5,8 +5,8 @@ using Talabat.Infrastructure.Data;
 
 namespace Route.Talabat.APIs.Controllers
 {
-
-	public class BuggyController : BaseApiController
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public class BuggyController : BaseApiController
 	{
 		private readonly StoreDbContext _dbContext;
 

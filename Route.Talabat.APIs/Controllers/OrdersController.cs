@@ -11,7 +11,7 @@ using Talabat.Core.Services.Contract;
 
 namespace Route.Talabat.APIs.Controllers
 {
-	[Authorize]
+	[Authorize(AuthenticationSchemes ="Bearer")]
 	public class OrdersController : BaseApiController
 	{
 		private readonly IOrderService _orderService;
@@ -31,7 +31,7 @@ namespace Route.Talabat.APIs.Controllers
 		[HttpPost] // Post : /api/orders
 		public async Task<ActionResult<OrderToReturnDto>> CreateOrder(OrderDto orderDto)
 		{
-			var address = _mapper.Map<AddressDto, Address>(orderDto.ShippingAddress);
+			var address = _mapper.Map<AddressDto, OrderAddress>(orderDto.ShippingAddress);
 
 			var buyerEmail = User.FindFirstValue(ClaimTypes.Email);
 
@@ -54,9 +54,9 @@ namespace Route.Talabat.APIs.Controllers
 
 
 		[HttpGet("{id}")] // Get : /api/orders/1?email=alaahamdy@gmail.com
-		public async Task<ActionResult<OrderToReturnDto>> GetOrdersForUser(int id , string email)
+		public async Task<ActionResult<OrderToReturnDto>> GetOrdersForUser(string email, int id )
 		{
-			var order = await _orderService.GetOrderByIdForUserAsync(id , email);
+			var order = await _orderService.GetOrderByIdForUserAsync(email, id );
 
 			if (order is null) return NotFound(new ApiResponse(404));
 

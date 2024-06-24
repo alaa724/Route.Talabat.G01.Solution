@@ -22,17 +22,17 @@ namespace Route.Talabat.APIs.Extensions
 	{
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
-			services.AddScoped(typeof(IUniteOfWork), typeof(UniteOfWork));
-
-			services.AddScoped(typeof(IProductService), typeof(ProductService));
-
-			services.AddScoped(typeof(IOrderService), typeof(OrderService));
-
-			services.AddScoped(typeof(IBasketRepository) , typeof(BasketRepository));
+			services.AddSingleton(typeof(IResponseCacheService), typeof(ResponseCacheService));
 
 			services.AddScoped(typeof(IPaymentService), typeof(PaymentService));
 
-			services.AddSingleton(typeof(IResponseCacheService), typeof(ResponseCacheService));
+			services.AddScoped(typeof(IOrderService), typeof(OrderService));
+
+			services.AddScoped(typeof(IUniteOfWork), typeof(UniteOfWork));
+
+			services.AddScoped(typeof(IBasketRepository) , typeof(BasketRepository));
+
+			services.AddScoped(typeof(IProductService), typeof(ProductService));
 
 			//services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 

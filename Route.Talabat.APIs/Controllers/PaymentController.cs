@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Route.Talabat.APIs.Errors;
 using Talabat.Core.Entities;
@@ -6,8 +7,7 @@ using Talabat.Core.Services.Contract;
 
 namespace Route.Talabat.APIs.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [Authorize]
     public class PaymentController : BaseApiController
     {
         private readonly IPaymentService _paymentService;

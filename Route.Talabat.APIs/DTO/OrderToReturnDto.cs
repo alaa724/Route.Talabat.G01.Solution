@@ -13,7 +13,7 @@ namespace Route.Talabat.APIs.DTO
 
 		public string Status { get; set; }
 
-		public Address ShippingAddress { get; set; } 
+		public OrderAddress ShippingAddress { get; set; } 
 
 		public string DeliveryMethod { get; set; } 
 		public decimal DeliveryMethodCost { get; set; } 

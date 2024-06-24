@@ -14,7 +14,7 @@ namespace Talabat.Core.Entities.Order_Aggregate
 		{
 		}
 
-		public Order(string buyerEmail, Address shippingAddress, int? deliveryMethodId, ICollection<OrderItem> items, decimal subtotal,string paymentIntentId)
+		public Order(string buyerEmail, OrderAddress shippingAddress, int? deliveryMethodId, ICollection<OrderItem> items, decimal subtotal,string paymentIntentId)
 		{
 			BuyerEmail = buyerEmail;
 			ShippingAddress = shippingAddress;
@@ -30,10 +30,10 @@ namespace Talabat.Core.Entities.Order_Aggregate
 
 		public OrderStatus Status { get; set; } = OrderStatus.Pending;
 
-		public Address ShippingAddress { get; set; } = null!;
+		public OrderAddress ShippingAddress { get; set; } = null!;
 
 		public int? DeliveryMethodId { get; set; } // FK
-		public DeliveryMethod? DeliveryMethod { get; set; } = null!; //Navigational Property [One]
+		public DeliveryMethod DeliveryMethod { get; set; } = null!; //Navigational Property [One]
 
 		public ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>(); //Navigational Property [Many]
 

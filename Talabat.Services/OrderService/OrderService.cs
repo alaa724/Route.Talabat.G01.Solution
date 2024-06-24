@@ -41,7 +41,7 @@ namespace Talabat.Application.OrderService
             ///_orderRepo = orderRepo;
         }
 
-		public async Task<Order?> CreateOrderAsync(string buyerEmail, string basketId, int deliveryMethodId, Address shippingAddress)
+		public async Task<Order?> CreateOrderAsync(string buyerEmail, string basketId, int deliveryMethodId, OrderAddress shippingAddress)
 		{
 			// 1.Get Basket From Baskets Repo
 
@@ -59,7 +59,7 @@ namespace Talabat.Application.OrderService
 
 					var productItemOrdered = new ProductItemOrder(product.Id, product.Name, product.PictureUrl);
 
-					var orderItem = new OrderItem(productItemOrdered, product.Price, item.Quantity);
+					var orderItem = new OrderItem(productItemOrdered, product.Price, item.Quntity);
 
 					orderItems.Add(orderItem);
 				}
@@ -120,11 +120,11 @@ namespace Talabat.Application.OrderService
 			return orders;
 		}
 
-		public Task<Order?> GetOrderByIdForUserAsync(int orderId, string buyerEmail)
+		public Task<Order> GetOrderByIdForUserAsync(string buyerEmail, int orderId)
 		{
 			var orderRepo = _uniteOfWork.Repository<Order>();
-
-			var spec = new OrderSpecifications(orderId, buyerEmail);
+			    
+			var spec = new OrderSpecifications(buyerEmail, orderId);
 
 			var order = orderRepo.GetWithSpecAsync(spec);
 
