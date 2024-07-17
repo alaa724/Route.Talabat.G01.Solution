@@ -114,6 +114,10 @@ namespace Route.Talabat.APIs
 
 			app.MapControllers();
 
+			app.UseAuthentication();
+
+			app.UseAuthorization();
+
 			#endregion
 
 			app.Run();
